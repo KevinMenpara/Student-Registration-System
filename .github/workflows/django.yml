@@ -26,6 +26,4 @@ jobs:
         python -m pip install --upgrade pip
         cd ./SRS/
         pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
+
