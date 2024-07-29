@@ -29,7 +29,7 @@ jobs:
 
     - name: Deploy to Heroku
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_API_KEY: HRKU-d2b77430-83c5-4f8c-bdca-2221ef2d0ff4
         run: |
-          heroku create $HEROKU_APP_NAME --buildpack heroku/python
-          git push heroku main
+          heroku create student-registration-system --buildpack heroku/python
+          git push heroku deployment
