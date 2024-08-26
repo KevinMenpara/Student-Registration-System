@@ -1,2 +1,3 @@
-/venv/
+SRS/venv/
+SRS/k_env/
 /SRS/.env
