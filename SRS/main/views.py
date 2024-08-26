@@ -253,9 +253,10 @@ def PayFees(request):
 
     razorpay_order = razorpay_client.order.create(dict(amount=amount, currency=currency, payment_capture='1'))
     razorpay_order_id = razorpay_order['id']
+    razorpay = "https://razorpay.com/payment-button/pl_OpZhXyEkIYg5gS/view/?utm_source=payment_button&utm_medium=button&utm_campaign=payment_button"
 
-    razorpay = "https://razorpay.com/payment-button/pl_MgAaDNUDkk2msX/view/?utm_source=payment_button&utm_medium=button&utm_campaign=payment_button"
-
+    # razorpay = "https://razorpay.com/payment-button/pl_MgAaDNUDkk2msX/view/?utm_source=payment_button&utm_medium=button&utm_campaign=payment_button"
+    
     request.session['user'] = user.email
     request.session.set_expiry(0)
 
@@ -282,15 +283,15 @@ def generate_receipt_pdf(company_name, user_name, app_num, amount_paid, order_id
 
     return pdf_buffer.getvalue()
 
-def success(request, amount):
+def success(request):
     if not request.session.get('user'):
         return redirect('main:Home')
 
     if User.objects.filter(username=request.session.get('user')).exists():
         user = User.objects.get(username=request.session['user'])
         applicant = Application.objects.get(student=user)
-        applicant.payment_id = str(amount) + request.GET.get('payment_id', '')
-        pdf_receipt = generate_receipt_pdf('Student Registration System',applicant.name, applicant.app_no, amount, applicant.order_id, applicant.payment_id)
+        applicant.payment_id = request.GET.get('payment_id', '')
+        pdf_receipt = generate_receipt_pdf('Student Registration System',applicant.name, applicant.app_no, '1', applicant.order_id, applicant.payment_id)
         applicant.save()
         applicant.payment_receipt.save('payment_receipt.pdf', ContentFile(pdf_receipt))
         # applicant.payment_receipt.name = "payment_receipt.pdf"
